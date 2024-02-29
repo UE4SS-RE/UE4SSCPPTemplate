@@ -29,7 +29,12 @@ if not exist RE-UE4SS (
 
 cd RE-UE4SS
 git fetch --tags
-for /f "delims=" %%a in ('git tag -l --sort=-v:refname ^| head -n 1') do set LATEST_TAG=%%a
+for /f "delims=" %%a in ('git tag -l --sort=-v:refname') do (
+    set LATEST_TAG=%%a
+    goto :checkout
+)
+
+:checkout
 git checkout %LATEST_TAG%
 git submodule update --init --recursive 
 cd ..
