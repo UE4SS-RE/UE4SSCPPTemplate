@@ -33,3 +33,6 @@
 
 BuildFiles/
 Output/
+build/
+.xmake/
+RE-UE4SS/
