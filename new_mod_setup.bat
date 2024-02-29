@@ -21,12 +21,17 @@ for %%a in ("a=A" "b=B" "c=C" "d=D" "e=E" "f=F" "g=G" "h=H" "i=I"
     call set %~1=%%%~1:%%~a%%
 )
 
-:: Step 1: Clone the RE-UE4SS repository
-echo Cloning RE-UE4SS repository...
-git clone https://github.com/UE4SS-RE/RE-UE4SS.git
+:: Step 1: Initialise or update RE-UE4SS repository on the latest release tag
+if not exist RE-UE4SS (
+    echo Cloning RE-UE4SS repository...
+    git clone https://github.com/UE4SS-RE/RE-UE4SS.git
+)
+
 cd RE-UE4SS
-echo Initializing submodules...
-git submodule update --init --recursive
+git fetch --tags
+for /f "delims=" %%a in ('git tag -l --sort=-v:refname ^| head -n 1') do set LATEST_TAG=%%a
+git checkout %LATEST_TAG%
+git submodule update --init --recursive 
 cd ..
 
 :: Step 2: Create mod directory and files
@@ -49,8 +54,7 @@ powershell -Command "(Get-Content dllmain.cpp) -replace 'MY_AWESOME_MOD_API', '%
 cd ..
 
 :: Step 3: Update the main xmake.lua
-echo Updating the main xmake.lua...
-echo includes("RE-UE4SS")> xmake.lua
+echo Adding mod to main xmake.lua...
 echo includes("%MOD_NAME%")>> xmake.lua
 
 :: Step 4: Create VS solution
