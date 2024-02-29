@@ -33,3 +33,5 @@
 
 BuildFiles/
 Output/
+build/
+.xmake/
