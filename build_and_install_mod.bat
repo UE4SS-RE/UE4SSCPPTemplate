@@ -23,11 +23,11 @@ set CONFIGURATION=%~3
 
 :: Step 1: Build xmake
 echo Running xmake...
-xmake f -m "%CONFIGURATION%" --runtimes="MD" -y
+xmake f -m "%CONFIGURATION%" -y
 xmake
 
 :: Step 2: Check if the build was successful
-if not exist Output\%CONFIGURATION%\%MOD_NAME%\%MOD_NAME%.dll (
+if not exist Binaries\%CONFIGURATION%\%MOD_NAME%\%MOD_NAME%.dll (
     echo Failed to build the mod. Please check the build output for errors.
     exit /b 1
 )
@@ -37,7 +37,7 @@ echo Deploying the mod...
 if not exist "%MODS_FOLDER%\%MOD_NAME%\dlls\" (
     mkdir "%MODS_FOLDER%\%MOD_NAME%\dlls\"
 )
-copy /Y "Output\%CONFIGURATION%\%MOD_NAME%\%MOD_NAME%.dll" "%MODS_FOLDER%\%MOD_NAME%\dlls\main.dll"
+copy /Y "Binaries\%CONFIGURATION%\%MOD_NAME%\%MOD_NAME%.dll" "%MODS_FOLDER%\%MOD_NAME%\dlls\main.dll"
 
 :: Step 4: Create an enabled.txt file inside the mod folder
 set ENABLED_TXT=%MODS_FOLDER%\%MOD_NAME%\enabled.txt

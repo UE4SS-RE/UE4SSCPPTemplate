@@ -19,3 +19,5 @@ For example:
 ```bash
 .\build_and_install_mod.bat MyAwesomeMod "C:\Program Files (x86)\Steam\steamapps\common\Deep Rock Galactic\FSD\Binaries\Win64" Game__Shipping__Win64
 ```
+
+If you want to delete a mod from your project, you can just delete the mod's folder and its entry in the root xmake.lua file.
