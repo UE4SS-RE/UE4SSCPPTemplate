@@ -31,8 +31,13 @@
 *.out
 *.app
 
+Binaries/
+Intermediates/
 BuildFiles/
+vsxmake2022/
 Output/
 build/
 .xmake/
 RE-UE4SS/
+Mods/*
+!xmake.lua
