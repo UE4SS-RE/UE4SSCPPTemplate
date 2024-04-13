@@ -1,23 +1,42 @@
 # UE4SSCPPTemplate
 
-To setup your project, run the following command in this directory, replacing "YourModName" with the name of your mod (no spaces or special characters, please!):
+This repository includes some custom `xmake` tasks to assist in your mod development.
 
-```bash
-.\new_mod_setup.bat YourModName
-```
+- `xmake newmod`
+- `xmake installmod`
+- `xmake bi`
+- `xmake ue4ss`
 
-This will create a directory vsxmake2022 with a `.sln` file that you can open.
+## `xmake newmod [-r, --regen] name`
 
-Then, when you are ready to build and install your mod into your game, run the following command in this directory:
+The `newmod` command will ensure you have the UE4SS repository cloned and then bootstrap new mod creation.
 
-```bash
-.\build_and_install_mod.bat YourModName "Path\To\Your\Game\UE4SS\Install\Directory" Build__Configuration 
-```
+Running `xmake newmod CoolMod` will generate `/Mods/CoolMod/...` in your repository and automatically link it with the xmake system. If you have VS2022 installed then the `newmod` command will also automatically generate a VS project which can be located at `/vsxmake2022/UE4SSCppTemplate.sln`.
 
-For example:
+## `xmake installmod [-d, --exedir] name`
 
-```bash
-.\build_and_install_mod.bat MyAwesomeMod "C:\Program Files (x86)\Steam\steamapps\common\Deep Rock Galactic\FSD\Binaries\Win64" Game__Shipping__Win64
-```
+The `installmod` command will copy your build output to a specific game directory. The configuration of the build you want to install is derived from the current xmake configuration. If you want to specify a specific configuration to install, then you can change the xmake configuration by running `xmake f -m "Game__Debug__Win64"`.
 
-If you want to delete a mod from your project, you can just delete the mod's folder and its entry in the root xmake.lua file.
+Running `xmake installmod --exedir="Path\To\Your\Game\Dir" CoolMod` will copy the build output and install `CoolMod` in the correct subdir in the game's mod folder.
+
+Note that running `xmake installmod` does not automatically build your mod. You have to manually build it with `xmake build` or use the `xmake bi` task to build and install your mod.
+
+## `xmake bi [-d, --exedir] name`
+
+This is a shorthand task that will run `xmake build` followed by the `xmake installmod` command. This one-liner command facilitates rapid testing/iterating of your mod.
+
+## `xmake ue4ss [-r, --remote] [-u, --update]`
+
+By default, the `xmake newmod` command will attempt to checkout the latest release tag of UE4SS to build your mods against. If you want to build your mods against a different remote then you can specify a branch or tag as the `--remote=` parameter.
+
+`xmake ue4ss --remote="v3.0.1"` will attempt to use tag "v3.0.1" as the checked out UE4SS version.
+
+You can use the latest release tag by specifying `xmake ue4ss --remote="latest"`.
+
+You can also specify branches instead of tags to use. `xmake ue4ss --remote=main` will checkout the `main` branch of UE4SS.
+
+If you want to get upstream changes from remote branches then you can use the `--update` arg to pull remote changes.
+
+`xmake ue4ss --remote=main --update` will pull the latest remote changes from the `main` branch locally.
+
+You can also run `xmake ue4ss --update` and xmake will try to pull changes from whatever branch your local UE4SS is currently on.
