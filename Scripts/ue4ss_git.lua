@@ -72,6 +72,7 @@ function main()
             print("UE4SS is not currently a branch. No remote changes to pull.")
         end
 
-        submodule.update({repodir = ue4ss_dir, recursive = true})
+        print("Updating submodule")
+        submodule.update({repodir = ue4ss_dir, recursive = true, init=true})
     end
 end
