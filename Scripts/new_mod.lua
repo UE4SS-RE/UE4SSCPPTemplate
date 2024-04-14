@@ -19,7 +19,7 @@ function main()
     -- Step 1: Initialise or update RE-UE4SS repository on the latest release tag.
     if not os.exists(path.join("$(projectdir)", "RE-UE4SS")) then
         print("UE4SS repository not yet cloned. Automatically cloning...")
-        task.run("ue4ss", {remote="latest"})
+        task.run("ue4ss", {remote="latest", update=nil})
     end
 
     -- Step 2: Create mod directory and files.
