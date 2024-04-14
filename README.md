@@ -15,7 +15,7 @@ Running `xmake newmod CoolMod` will generate `/Mods/CoolMod/...` in your reposit
 
 ## `xmake installmod [-d, --exedir] name`
 
-The `installmod` command will copy your build output to a specific game directory. The configuration of the build you want to install is derived from the current xmake configuration. If you want to specify a specific configuration to install, then you can change the xmake configuration by running `xmake f -m "Game__Debug__Win64"`.
+The `installmod` command will copy your build output to a specific game directory. The configuration of the build you want to install is derived from the currently configured xmake mode (`xmake f -m <mode>`). This configured mode is global to the `RE-UE4SS` repo and all the mods in the `Mods` folder. If you want to specify a specific configuration to install, then you can change the xmake configuration by running `xmake f -m "Game__Debug__Win64"`.
 
 Running `xmake installmod --exedir="Path\To\Your\Game\Dir" CoolMod` will copy the build output and install `CoolMod` in the correct subdir in the game's mod folder.
 
@@ -23,13 +23,13 @@ Note that running `xmake installmod` does not automatically build your mod. You 
 
 ## `xmake bi [-d, --exedir] name`
 
-This is a shorthand task that will run `xmake build` followed by the `xmake installmod` command. This one-liner command facilitates rapid testing/iterating of your mod.
+This is a shorthand task that will run `xmake build -y <modname>` followed by the `xmake installmod` command. This one-liner command facilitates rapid testing/iterating of your mod.
 
 ## `xmake ue4ss [-r, --remote] [-u, --update]`
 
 By default, the `xmake newmod` command will attempt to checkout the latest release tag of UE4SS to build your mods against. If you want to build your mods against a different remote then you can specify a branch or tag as the `--remote=` parameter.
 
-`xmake ue4ss --remote="v3.0.1"` will attempt to use tag "v3.0.1" as the checked out UE4SS version.
+`xmake ue4ss --remote="v3.1.0"` will attempt to use tag "v3.1.0" as the checked out UE4SS version.
 
 You can use the latest release tag by specifying `xmake ue4ss --remote="latest"`.
 

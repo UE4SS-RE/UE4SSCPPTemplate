@@ -10,12 +10,16 @@ function main()
     local remote = option.get("remote")
     local update = option.get("update")
 
-    if not (remote and update) then
+    if (remote == nil and update == nil) then
         print("No arguments. Run 'xmake ue4ss --help'")
         os.exit()
     end
-    
-    try_clone_ue4ss()
+
+    local ue4ss_repo = path.join("$(projectdir)", ue4ss_dir)
+    if not os.exists(ue4ss_repo) then
+        print("Cloning UE4SS Repository...")
+        git.clone(ue4ss_url)
+    end
 
     -- Special handling if the user wants to find the 'latest' release tag.
     if remote == "latest" then
@@ -33,18 +37,6 @@ function main()
                 end
             end
         end
-
-        -- Special logic to ensure we don't check out a tag that doesn't have xmake.
-        -- This would put the user's local repo into an unrecoverable state.
-        if latest_tag then
-            if not semver.satisfies(latest_tag, ">3.0.1") then
-                print("The latest tag %s is not compatible with xmake. Using 'main' branch instead of a tag.", latest_tag)
-                latest_tag = "main"
-            end
-
-            print("Using latest tag: %s", latest_tag)
-        end
-
         remote = latest_tag
     end
 
@@ -55,7 +47,18 @@ function main()
         print("%s was not found as a valid git remote.")
         os.exit()
     end
-    
+
+    if type == "tag" then
+        -- Special logic to ensure we don't check out a tag that doesn't have xmake.
+        -- This would put the user's local repo into an unrecoverable state.
+        if not semver.satisfies(remote, ">3.0.1") then
+            print("The latest tag %s is not compatible with xmake. Using 'main' branch instead of a tag.", remote)
+            remote = "main"
+            type = "branch"
+        end
+    end
+
+    print("Checking out %s %s...", type, remote)
     git.checkout(remote,{repodir=ue4ss_dir})
 
     if update then
@@ -67,13 +70,5 @@ function main()
         else
             print("UE4SS is not currently a branch. Update has no effect")
         end
-    end
-end
-
-function try_clone_ue4ss()
-    local ue4ss_dir = path.join("$(projectdir)", "RE-UE4SS")
-    if not os.exists(ue4ss_dir) then
-        print("Cloning UE4SS Repository...")
-        git.clone(ue4ss_url)
     end
 end

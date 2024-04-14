@@ -5,7 +5,7 @@ task("ue4ss")
         description = "Change the version of ue4ss that is fetched from github.",
         options = 
         {
-            {'r', 'remote', "v", "main", "Tag/branch of UE4SS to use. Ex: 'latest', 'v3.0.1', 'experimental', 'main'"},
+            {'r', 'remote', "v", "latest", "Tag/branch of UE4SS to use. Ex: 'latest', 'v3.0.1', 'experimental', 'main'"},
             {'u', 'update', "k", nil, "Fetches and downloads any remote changes. Only works when the --remote arg is a git branch."},
         }
     }
