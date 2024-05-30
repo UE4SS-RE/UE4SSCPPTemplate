@@ -46,12 +46,12 @@ cd %MOD_NAME%
 
 :: Create xmake.lua
 echo Creating xmake.lua...
-copy ..\xmake_template.lua xmake.lua
+copy ..\assets\xmake_template.lua xmake.lua
 powershell -Command "(Get-Content xmake.lua) -replace 'MyAwesomeMod', '%MOD_NAME%' | Set-Content xmake.lua"
 
 :: Create dllmain.cpp
 echo Creating dllmain.cpp...
-copy ..\dllmain_template.cpp dllmain.cpp
+copy ..\assets\dllmain_template.cpp dllmain.cpp
 powershell -Command "(Get-Content dllmain.cpp) -replace 'MyAwesomeMod', '%MOD_NAME%' | Set-Content dllmain.cpp"
 powershell -Command "(Get-Content dllmain.cpp) -replace 'MY_AWESOME_MOD_API', '%MOD_NAME_UPPER%_API' | Set-Content dllmain.cpp"
 
